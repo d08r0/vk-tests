@@ -55,6 +55,8 @@ public class VkontakteTest {
     @UseDataProvider("message")
     public void TestTitle(String message) {
 
+        String friend = "Артем Ерошенко";
+
         VConfig cfg = ConfigFactory.create(VConfig.class);
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -69,13 +71,12 @@ public class VkontakteTest {
 
         //Поиск друга
         driver.findElement(By.id("l_fr")).click();
-        driver.findElement(By.id("s_search")).sendKeys("Артем Ерошенко");
+        driver.findElement(By.id("s_search")).sendKeys(friend);
 
         //Отправка сообщения
         driver.findElement(By.xpath("//*[@class='friends_field_act']")).click();
         driver.findElement(By.id("mail_box_editable")).sendKeys(message);
         driver.findElement(By.id("mail_box_send")).click();
-
 
         WebElement myDynamicElement = (new WebDriverWait(driver, 10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("mail_box_send")));
