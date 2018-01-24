@@ -83,7 +83,6 @@ public class VkontakteTest {
         driver.findElement(By.id("mail_box_editable")).sendKeys(message);
         driver.findElement(By.id("mail_box_send")).click();
 
-        WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("mail_box_send")));
+        //Добавить проврку
     }
 }
