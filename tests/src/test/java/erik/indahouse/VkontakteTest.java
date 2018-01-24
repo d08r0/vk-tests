@@ -51,11 +51,18 @@ public class VkontakteTest {
         driver = new ChromeDriver();
     }
 
+    @After
+    public void setup() {
+        driver.quit();
+    }
+
     @Test
     @UseDataProvider("message")
     public void TestTitle(String message) {
 
-        String friend = "Артем Ерошенко";
+        //String friend = "Артем Ерошенко";
+
+        String friend = "111111";
 
         VConfig cfg = ConfigFactory.create(VConfig.class);
 
@@ -80,10 +87,5 @@ public class VkontakteTest {
 
         WebElement myDynamicElement = (new WebDriverWait(driver, 10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.id("mail_box_send")));
-    }
-
-    @After
-    public void setup() {
-        driver.quit();
     }
 }
