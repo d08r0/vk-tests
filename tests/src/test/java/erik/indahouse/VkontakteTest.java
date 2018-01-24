@@ -60,9 +60,7 @@ public class VkontakteTest {
     @UseDataProvider("message")
     public void TestTitle(String message) {
 
-        //String friend = "Артем Ерошенко";
-
-        String friend = "111111";
+        String friend = "Артем Ерошенко";
 
         VConfig cfg = ConfigFactory.create(VConfig.class);
 
