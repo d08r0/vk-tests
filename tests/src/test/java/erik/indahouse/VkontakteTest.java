@@ -15,11 +15,15 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.rmi.CORBA.Util;
+import java.util.Random;
+
 
 import java.util.concurrent.TimeUnit;
 
 import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.After;
 import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by scrooge on 22.01.18.
@@ -30,9 +34,16 @@ public class VkontakteTest {
 
     private WebDriver driver;
 
+    static String friend = "Венди гагарина";
+    static String url = "http://www.vk.com";
+    static VConfig cfg = ConfigFactory.create(VConfig.class);
+
+
     @DataProvider
     public static Object[] message() {
         return new Object[]{
+
+
                 "Привет",
                 "Hi",
                 "Hallo",
@@ -52,26 +63,22 @@ public class VkontakteTest {
     }
 
     @After
-    public void setup() {
+    public void exit() {
         driver.quit();
     }
 
     @Test
     @UseDataProvider("message")
-    public void TestTitle(String message) {
-
-        String friend = "Артем Ерошенко";
-
-        VConfig cfg = ConfigFactory.create(VConfig.class);
+    public void TestTitle(String message) throws InterruptedException {
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("http://www.vk.com");
+        driver.get(url);
 
         //Авторизация
-        WebElement login = driver.findElement(By.id("index_email"));
-        login.sendKeys(cfg.LOGIN());
-        WebElement password = driver.findElement(By.id("index_pass"));
-        password.sendKeys(cfg.PASSWORD());
+        WebElement login1 = driver.findElement(By.id("index_email"));
+        login1.sendKeys(cfg.login());
+        WebElement password1 = driver.findElement(By.id("index_pass"));
+        password1.sendKeys(cfg.password());
         driver.findElement(By.id("index_login_button")).click();
 
         //Поиск друга
@@ -80,9 +87,16 @@ public class VkontakteTest {
 
         //Отправка сообщения
         driver.findElement(By.xpath("//*[@class='friends_field_act']")).click();
-        driver.findElement(By.id("mail_box_editable")).sendKeys(message);
-        driver.findElement(By.id("mail_box_send")).click();
+        driver.findElement(By.xpath("//div[@id='mail_box_editable']")).sendKeys(message);
 
-        //Добавить проверку
+
+        driver.findElement(By.xpath("//*[@class='flat_button fl_r mail_box_send_btn']")).click();
+
+        driver.navigate().refresh();
+
+        driver.findElement(By.xpath("//li[@id='l_msg']")).click();
+
+        assertThat(driver.findElement(By.xpath("//*[@class='nim-dialog--inner-text']")).getText())
+                .isEqualTo(message);
     }
 }

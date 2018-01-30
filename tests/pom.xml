@@ -46,6 +46,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>uk.ac.abdn</groupId>
+            <artifactId>SimpleNLG</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>
