@@ -32,6 +32,7 @@ public class VkontakteTest {
     public static final By ENTER_MESSAGE = By.xpath("//div[@id='mail_box_editable']");
     public static final By SEND_MESSAGE_BUTTON = By.xpath("//*[@class='flat_button fl_r mail_box_send_btn']");
     public static final By MESSAGE_BUTTON = By.xpath("//li[@id='l_msg']");
+    public static final By MESSAGE_TEXT = By.xpath("//*[@class='nim-dialog--inner-text']");
     private WebDriver driver;
 
     static String friend = "Венди гагарина";
@@ -85,7 +86,7 @@ public class VkontakteTest {
 
         driver.findElement(MESSAGE_BUTTON).click();
 
-        assertThat(driver.findElement(By.xpath("//*[@class='nim-dialog--inner-text']")).getText())
+        assertThat(driver.findElement(MESSAGE_TEXT).getText())
                 .isEqualTo(message);
     }
 }
