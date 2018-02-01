@@ -69,7 +69,7 @@ public class VkontakteTest {
 
     @Test
     @UseDataProvider("message")
-    public void TestTitle(String message) throws InterruptedException {
+    public void testTitle(String message) throws InterruptedException {
 
         driver.findElement(ENTER_LOGIN).sendKeys(cfg.login());
         driver.findElement(ENTER_PASSWORD).sendKeys(cfg.password());
