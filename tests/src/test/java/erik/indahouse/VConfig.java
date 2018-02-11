@@ -7,4 +7,5 @@ public interface VConfig extends Config {
 
     String login();
     String password();
+    String friend();
 }

@@ -24,21 +24,22 @@
         </dependency>
 
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.6.2</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>uk.ac.abdn</groupId>
+            <artifactId>SimpleNLG</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.tngtech.java</groupId>
             <artifactId>junit-dataprovider</artifactId>
             <version>1.11.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.aeonbits.owner</groupId>
             <artifactId>owner</artifactId>
@@ -47,10 +48,10 @@
         </dependency>
 
         <dependency>
-            <groupId>uk.ac.abdn</groupId>
-            <artifactId>SimpleNLG</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.6.2</version>
         </dependency>
-
 
     </dependencies>
 
