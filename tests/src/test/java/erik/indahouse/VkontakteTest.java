@@ -95,7 +95,7 @@ public class VkontakteTest {
         objMessage = new MessagePage(driver);
 
 
-        assertThat(driver.findElement(MESSAGE_TEXT).getText())
+        assertThat(objMessage.getMessageText())
                 .isEqualTo(message);
     }
 }

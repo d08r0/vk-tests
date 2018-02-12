@@ -15,7 +15,7 @@ public class MessagePage {
         this.driver = driver;
     }
 
-    public void setMessageText(){
-        driver.findElement(MESSAGE_TEXT).getText();
+    public String getMessageText(){
+       return driver.findElement(MESSAGE_TEXT).getText();
     }
 }
