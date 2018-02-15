@@ -1,16 +1,23 @@
 package erik.indahouse;
 
+import com.thoughtworks.selenium.webdriven.commands.ClickAt;
 import org.aeonbits.owner.ConfigFactory;
+import org.assertj.core.api.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.ClickAction;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.FriendsPages;
 import pages.HomePages;
 import pages.LoginPages;
@@ -27,8 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(DataProviderRunner.class)
 public class VkontakteTest {
 
-
-    public static final By MESSAGE_TEXT = By.xpath("//span[@class='nim-dialog--inner-text']");
+    public static final By MUSIC = By.xpath("//li[@id='l_aud']");
+    public static final By VIDEO = By.xpath("//li[@id='l_vid']");
 
     public static final String url = "http://www.vk.com";
     public static final VConfig cfg = ConfigFactory.create(VConfig.class);
@@ -39,6 +46,7 @@ public class VkontakteTest {
     HomePages objHome;
     FriendsPages objFriends;
     MessagePage objMessage;
+
 
     @DataProvider
     public static Object[] message() {
@@ -60,6 +68,10 @@ public class VkontakteTest {
     public void createDriver() {
         driver = new ChromeDriver();
 
+        objLogin = new LoginPages(driver);
+        objHome = new HomePages(driver);
+        objFriends = new FriendsPages(driver);
+        objMessage = new MessagePage(driver);
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(url);
@@ -74,15 +86,13 @@ public class VkontakteTest {
     @UseDataProvider("message")
     public void testTitle(String message) throws InterruptedException {
 
-        objLogin = new LoginPages(driver);
         objLogin.setLogin(cfg.login());
         objLogin.setPassword(cfg.password());
         objLogin.clickLogin();
 
-        objHome = new HomePages(driver);
         objHome.clickFriendsButon();
 
-        objFriends = new FriendsPages(driver);
+
         objFriends.setSearchFriends(cfg.friend());
         objFriends.clickWriteMessageButton();
         objFriends.setMessage(message);
@@ -92,10 +102,53 @@ public class VkontakteTest {
 
         objHome.clickMessageButon();
 
-        objMessage = new MessagePage(driver);
-
-
         assertThat(objMessage.getMessageText())
                 .isEqualTo(message);
+    }
+
+    @Test
+    public void testRemoveCategories() {
+
+        Actions builder = new Actions(driver);
+
+        objLogin.setLogin(cfg.login());
+        objLogin.setPassword(cfg.password());
+        objLogin.clickLogin();
+
+        objHome.clickMenuSettingButon();
+
+        builder.moveToElement(objHome.MusicCheckBoxOn()).click().perform();
+        builder.moveToElement(objHome.VideoCheckBoxOn()).click().perform();
+
+        builder.moveToElement(objHome.SaveButton()).click().perform();
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(MUSIC)));
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(VIDEO)));
+    }
+
+    @Test
+    public void testAddCategories() {
+
+        Actions builder = new Actions(driver);
+
+        objLogin.setLogin(cfg.login());
+        objLogin.setPassword(cfg.password());
+        objLogin.clickLogin();
+
+        objHome.clickMenuSettingButon();
+
+        builder.moveToElement(objHome.MusicCheckBoxOff()).click().perform();
+        builder.moveToElement(objHome.VideoCheckBoxOff()).click().perform();
+
+        builder.moveToElement(objHome.SaveButton()).click().perform();
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOfElementLocated(MUSIC));
+
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.visibilityOfElementLocated(VIDEO));
     }
 }
