@@ -36,6 +36,7 @@ import org.junit.rules.TestRule;
 import org.junit.runners.model.Statement;
 import org.junit.ClassRule;
 import pages.MessagePageHE;
+import ru.yandex.qatools.allure.annotations.Title;
 
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -47,11 +48,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 
 @RunWith(DataProviderRunner.class)
-public class VkontakteTest {
+public class VkontakteTestHE {
 //private  WebDriver driver = new ChromeDriver();
 
-    @Rule
-    public  VkRule rule = new VkRule();
+
 
 
 
@@ -79,19 +79,8 @@ public class VkontakteTest {
 //========
 
 
-
-    public static final By MUSIC = By.xpath("//li[@id='l_aud']");
-    public static final By VIDEO = By.xpath("//li[@id='l_vid']");
-
-    public static final String url = "http://www.vk.com";
+//    public static final String url = "http://www.vk.com";
     public static final VConfig cfg = ConfigFactory.create(VConfig.class);
-
-    private WebDriver driver;
-
-    LoginPages objLogin;
-    HomePages objHome;
-    FriendsPages objFriends;
-    MessagePage objMessage;
 
 
     @DataProvider
@@ -115,87 +104,57 @@ public class VkontakteTest {
 //    public void createDriver() {
 //        driver = new ChromeDriver();
 //
-//        objLogin = new LoginPages(driver);
-//        objHome = new HomePages(driver);
-//        objFriends = new FriendsPages(driver);
-//        objMessage = new MessagePage(driver);
-//
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+////        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 //        driver.get(url);
 //    }
-//
+
 //    @After
 //    public void exit() {
 //        driver.quit();
 //    }
 
+
+//
+//    private CardPage cardPage() {
+//        WebPageFactory factory = new WebPageFactory();
+//        MainPage page = factory.get(driver, MainPage.class);
+//
+//
+//        return cardPage;
+//    }
+
+
+    @Rule
+    public  VkRule rule = new VkRule();
+
+    WebDriver driver;
+
     @Test
+    @Title("Отправить сообщение")
     @UseDataProvider("message")
     public void testTitle(String message) throws InterruptedException {
 
-        objLogin.setLogin(cfg.login());
-        objLogin.setPassword(cfg.password());
-        objLogin.clickLogin();
+        WebPageFactory factory = new WebPageFactory();
+        FriendsPagesHE friendsPages = factory.get(driver, FriendsPagesHE.class);
+        HomePagesHE homePages = factory.get(driver, HomePagesHE.class);
+        LoginPagesHE loginPages = factory.get(driver, LoginPagesHE.class);
+        MessagePageHE messagePage = factory.get(driver, MessagePageHE.class);
 
-        objHome.clickFriendsButon();
+        loginPages.ENTER_LOGIN().sendKeys(cfg.login());
+        loginPages.ENTER_PASSWORD().sendKeys(cfg.password());
+        loginPages.SEND_LOGIN_BUTTON().click();
 
-        objFriends.setSearchFriends(cfg.friend());
-        objFriends.clickWriteMessageButton();
-        objFriends.setMessage(message);
-        objFriends.clickSendMessageButton();
+        homePages.SEND_FRIENDS_BUTTON().click();
 
-        driver.navigate().refresh();
+        friendsPages.SEARCH_FRIENDS().sendKeys(cfg.friend());
+        friendsPages.WRITE_MESSAGE_BUTTON().click();
+        friendsPages.ENTER_MESSAGE().sendKeys(message);
+        friendsPages.SEND_MESSAGE_BUTTON().click();
 
-        objHome.clickMessageButon();
+        homePages.MESSAGE_BUTTON().click();
 
-        assertThat(objMessage.getMessageText())
+                assertThat(messagePage.MESSAGE_TEXT().getText())
                 .isEqualTo(message);
     }
 
-    @Test
-    public void testRemoveCategories() {
-
-        Actions builder = new Actions(driver);
-
-        objLogin.setLogin(cfg.login());
-        objLogin.setPassword(cfg.password());
-        objLogin.clickLogin();
-
-        objHome.clickMenuSettingButon();
-
-        builder.moveToElement(objHome.MusicCheckBoxOn()).click().perform();
-        builder.moveToElement(objHome.VideoCheckBoxOn()).click().perform();
-
-        builder.moveToElement(objHome.SaveButton()).click().perform();
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(MUSIC)));
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(VIDEO)));
-    }
-
-    @Test
-    public void testAddCategories() {
-
-
-        Actions builder = new Actions(driver);
-
-        objLogin.setLogin(cfg.login());
-        objLogin.setPassword(cfg.password());
-        objLogin.clickLogin();
-
-        objHome.clickMenuSettingButon();
-
-        builder.moveToElement(objHome.MusicCheckBoxOff()).click().perform();
-        builder.moveToElement(objHome.VideoCheckBoxOff()).click().perform();
-
-        builder.moveToElement(objHome.SaveButton()).click().perform();
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(MUSIC));
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(VIDEO));
-    }
 }

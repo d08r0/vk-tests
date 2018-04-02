@@ -17,9 +17,6 @@ public class HomePages {
     public static final By MUSIC_BUTTON = By.xpath("//li[@id='l_aud']");
     public static final By VIDEO_BUTTON = By.xpath("//li[@id='l_vid']");
 
-//    public static final By MUSIC_CHECK_BOX = By.xpath("//a[@class='olist_item_wrap olist_item_menu olist_item_photos olist_item_wrap_on fl_r']");
-
-
     public static final By MUSIC_CHECK_BOX_ON = By.xpath("//a[@class='olist_item_wrap olist_item_menu olist_item_audio olist_item_wrap_on']");
     public static final By MUSIC_CHECK_BOX = By.xpath("//a[@class='olist_item_wrap olist_item_menu olist_item_audio']");
 
