@@ -52,9 +52,6 @@ public class VkontakteTestHE {
 //private  WebDriver driver = new ChromeDriver();
 
 
-
-
-
 //========
 //    @Rule
 //    public ExternalResource fixtures = new ExternalResource() {
@@ -79,7 +76,7 @@ public class VkontakteTestHE {
 //========
 
 
-//    public static final String url = "http://www.vk.com";
+    public static final String url = "http://www.vk.com";
     public static final VConfig cfg = ConfigFactory.create(VConfig.class);
 
 
@@ -87,14 +84,14 @@ public class VkontakteTestHE {
     public static Object[] message() {
         return new Object[]{
                 "Привет",
-                "Hi",
-                "Hallo",
-                "Bonjour",
-                "ciao",
-                "hola",
-                "hei",
-                "szia",
-                "прывітанне",
+//                "Hi",
+//                "Hallo",
+//                "Bonjour",
+//                "ciao",
+//                "hola",
+//                "hei",
+//                "szia",
+//                "прывітанне",
                 "(:"
         };
     }
@@ -123,22 +120,39 @@ public class VkontakteTestHE {
 //        return cardPage;
 //    }
 
+//    WebDriver driver;
+
+    WebDriver driver = new ChromeDriver();
+
+    WebPageFactory factory = new WebPageFactory();
+
+    FriendsPagesHE friendsPages = factory.get(driver, FriendsPagesHE.class);
+    HomePagesHE homePages = factory.get(driver, HomePagesHE.class);
+    LoginPagesHE loginPages = factory.get(driver, LoginPagesHE.class);
+    MessagePageHE messagePage = factory.get(driver, MessagePageHE.class);
+
 
     @Rule
-    public  VkRule rule = new VkRule();
+    public VkRule rule = new VkRule(driver);
 
-    WebDriver driver;
+
+
 
     @Test
     @Title("Отправить сообщение")
     @UseDataProvider("message")
     public void testTitle(String message) throws InterruptedException {
 
-        WebPageFactory factory = new WebPageFactory();
-        FriendsPagesHE friendsPages = factory.get(driver, FriendsPagesHE.class);
-        HomePagesHE homePages = factory.get(driver, HomePagesHE.class);
-        LoginPagesHE loginPages = factory.get(driver, LoginPagesHE.class);
-        MessagePageHE messagePage = factory.get(driver, MessagePageHE.class);
+//        WebPageFactory factory = new WebPageFactory();
+//
+//        FriendsPagesHE friendsPages = factory.get(driver, FriendsPagesHE.class);
+//        HomePagesHE homePages = factory.get(driver, HomePagesHE.class);
+//        LoginPagesHE loginPages = factory.get(driver, LoginPagesHE.class);
+//        MessagePageHE messagePage = factory.get(driver, MessagePageHE.class);
+
+
+
+
 
         loginPages.ENTER_LOGIN().sendKeys(cfg.login());
         loginPages.ENTER_PASSWORD().sendKeys(cfg.password());
@@ -153,7 +167,7 @@ public class VkontakteTestHE {
 
         homePages.MESSAGE_BUTTON().click();
 
-                assertThat(messagePage.MESSAGE_TEXT().getText())
+        assertThat(messagePage.MESSAGE_TEXT().getText())
                 .isEqualTo(message);
     }
 

@@ -50,8 +50,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VkontakteTest {
 //private  WebDriver driver = new ChromeDriver();
 
-    @Rule
-    public  VkRule rule = new VkRule();
+//    @Rule
+//    public  VkRule rule = new VkRule();
 
 
 

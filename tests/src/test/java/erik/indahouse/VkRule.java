@@ -24,19 +24,22 @@ import static erik.indahouse.VkontakteTest.url;
 public class VkRule extends ExternalResource {
     private WebDriver driver;
 
+    public VkRule(WebDriver driver) {
+        this.driver = driver;
+    }
+
     @Override
     protected void before() {
 
-
-        driver = new ChromeDriver();
+//        driver = new ChromeDriver();
         driver.get(url);
-//        System.out.println(" -> strat driver");
+
     }
 
     @Override
     protected void after() {
 
         driver.quit();
-//        System.out.println(" -> stop driver");
+
     }
 }
