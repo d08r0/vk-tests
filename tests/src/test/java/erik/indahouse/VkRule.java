@@ -22,17 +22,21 @@ import static erik.indahouse.VkontakteTest.url;
 
 
 public class VkRule extends ExternalResource {
+    public WebDriver getDriver() {
+        return driver;
+    }
+
     private WebDriver driver;
 
-    public VkRule(WebDriver driver) {
-        this.driver = driver;
-    }
+//    public VkRule(WebDriver driver) {
+//        this.driver = driver;
+//    }
 
     @Override
     protected void before() {
 
-//        driver = new ChromeDriver();
-        driver.get(url);
+        driver = new ChromeDriver();
+//        driver.get(url);
 
     }
 

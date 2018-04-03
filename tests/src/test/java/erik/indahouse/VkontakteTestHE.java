@@ -3,43 +3,18 @@ package erik.indahouse;
 import com.thoughtworks.selenium.webdriven.commands.ClickAt;
 import io.qameta.htmlelements.WebPageFactory;
 import org.aeonbits.owner.ConfigFactory;
-import org.assertj.core.api.Assert;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.ClickAction;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.raml.parser.rule.SimpleRule;
-import pages.FriendsPages;
 import pages.FriendsPagesHE;
-import pages.HomePages;
 import pages.HomePagesHE;
-import pages.LoginPages;
 import pages.LoginPagesHE;
-import pages.MessagePage;
-
-import java.util.concurrent.TimeUnit;
-
-import org.junit.rules.ExternalResource;
-import org.junit.rules.TestRule;
-import org.junit.runners.model.Statement;
-import org.junit.ClassRule;
 import pages.MessagePageHE;
 import ru.yandex.qatools.allure.annotations.Title;
-
-
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,110 +24,51 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
 public class VkontakteTestHE {
-//private  WebDriver driver = new ChromeDriver();
-
-
-//========
-//    @Rule
-//    public ExternalResource fixtures = new ExternalResource() {
-//        @Override
-//        protected void before() throws Throwable {
-//            driver = new ChromeDriver();
-//            objLogin = new LoginPages(driver);
-//            objHome = new HomePages(driver);
-//            objFriends = new FriendsPages(driver);
-//            objMessage = new MessagePage(driver);
-//
-//            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//            driver.get(url);
-//        }
-//
-//        @Override
-//        protected void after() {
-//            driver.quit();
-//        }
-//    };
-
-//========
-
 
     public static final String url = "http://www.vk.com";
     public static final VConfig cfg = ConfigFactory.create(VConfig.class);
 
+    FriendsPagesHE friendsPages;
+    HomePagesHE homePages;
+    LoginPagesHE loginPages;
+    MessagePageHE messagePage;
 
     @DataProvider
     public static Object[] message() {
         return new Object[]{
                 "Привет",
-//                "Hi",
-//                "Hallo",
-//                "Bonjour",
-//                "ciao",
-//                "hola",
-//                "hei",
-//                "szia",
-//                "прывітанне",
+                "Hi",
+                "Hallo",
+                "Bonjour",
+                "ciao",
+                "hola",
+                "hei",
+                "szia",
+                "прывітанне",
                 "(:"
         };
     }
 
+    @Before
+    public void setUp() throws Exception {
 
-//    @Before
-//    public void createDriver() {
-//        driver = new ChromeDriver();
-//
-////        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        driver.get(url);
-//    }
+        rule.getDriver().get(url);
 
-//    @After
-//    public void exit() {
-//        driver.quit();
-//    }
-
-
-//
-//    private CardPage cardPage() {
-//        WebPageFactory factory = new WebPageFactory();
-//        MainPage page = factory.get(driver, MainPage.class);
-//
-//
-//        return cardPage;
-//    }
-
-//    WebDriver driver;
-
-    WebDriver driver = new ChromeDriver();
-
-    WebPageFactory factory = new WebPageFactory();
-
-    FriendsPagesHE friendsPages = factory.get(driver, FriendsPagesHE.class);
-    HomePagesHE homePages = factory.get(driver, HomePagesHE.class);
-    LoginPagesHE loginPages = factory.get(driver, LoginPagesHE.class);
-    MessagePageHE messagePage = factory.get(driver, MessagePageHE.class);
-
+        friendsPages = factory.get(rule.getDriver(), FriendsPagesHE.class);
+        homePages = factory.get(rule.getDriver(), HomePagesHE.class);
+        loginPages = factory.get(rule.getDriver(), LoginPagesHE.class);
+        messagePage = factory.get(rule.getDriver(), MessagePageHE.class);
+    }
 
     @Rule
-    public VkRule rule = new VkRule(driver);
+    public VkRule rule = new VkRule();
 
-
-
+    WebPageFactory factory = new WebPageFactory();
 
     @Test
     @Title("Отправить сообщение")
     @UseDataProvider("message")
     public void testTitle(String message) throws InterruptedException {
-
-//        WebPageFactory factory = new WebPageFactory();
-//
-//        FriendsPagesHE friendsPages = factory.get(driver, FriendsPagesHE.class);
-//        HomePagesHE homePages = factory.get(driver, HomePagesHE.class);
-//        LoginPagesHE loginPages = factory.get(driver, LoginPagesHE.class);
-//        MessagePageHE messagePage = factory.get(driver, MessagePageHE.class);
-
-
-
-
 
         loginPages.ENTER_LOGIN().sendKeys(cfg.login());
         loginPages.ENTER_PASSWORD().sendKeys(cfg.password());
@@ -170,5 +86,4 @@ public class VkontakteTestHE {
         assertThat(messagePage.MESSAGE_TEXT().getText())
                 .isEqualTo(message);
     }
-
 }
