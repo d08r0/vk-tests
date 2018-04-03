@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 
 @RunWith(DataProviderRunner.class)
-public class VkontakteTestHE {
+public class VkontakteTestHtmlElement {
 
     public static final String url = "http://www.vk.com";
     public static final VConfig cfg = ConfigFactory.create(VConfig.class);
